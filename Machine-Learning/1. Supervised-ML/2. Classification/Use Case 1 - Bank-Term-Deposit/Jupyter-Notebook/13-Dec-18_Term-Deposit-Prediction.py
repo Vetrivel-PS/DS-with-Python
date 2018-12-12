@@ -3,6 +3,8 @@
 
 # # Problem Statement :
 
+# We have a set of Predictor / Independent / Feature variables in order to predict y which is the Target / Dependent / Label Variable
+
 # # Predictor / Independent Variables :
 
 # 1. age (numeric)
@@ -106,7 +108,7 @@ data.tail()
 
 # # Extracting Information on Columns :
 
-# In[ ]:
+# In[5]:
 
 
 # Prints Information of All Columns :
@@ -116,7 +118,7 @@ data.info(verbose=True)
 # data.info()
 
 
-# In[ ]:
+# In[6]:
 
 
 # Prints a Summary of Columns Count and its dtypes but not per column Information :
@@ -126,7 +128,7 @@ data.info(verbose=False)
 
 # # Extracting Statistical Information on Numerical Columns :
 
-# In[ ]:
+# In[7]:
 
 
 # Shows Descriptive Statistics Values on Numerical Value based Features :
@@ -138,7 +140,7 @@ data.describe()
 
 # ### 1. Using PairPlot :
 
-# In[ ]:
+# In[8]:
 
 
 sns.pairplot(data)
@@ -146,15 +148,15 @@ sns.pairplot(data)
 
 # ### 2. Correlation Matrix :
 
-# In[ ]:
+# In[9]:
 
 
 data.corr()
 
 
-# ### 3. Heatpot to Visualise Correlation
+# ### 3. Heatmap to Visualise Correlation
 
-# In[ ]:
+# In[10]:
 
 
 sns.heatmap(data.corr())
@@ -182,18 +184,18 @@ sns.heatmap(data.corr())
 
 # # Exploring Target Varaible :
 
-# In[ ]:
+# In[11]:
 
 
 # Barplot for the Target / Dependent Variable :
 
-sns.countplot(x='y',data=data, palette='hls')
+sns.countplot(x='y',data=data)
 plt.show()
 
 
 # # Exploring Predictor Variables / Features :
 
-# In[ ]:
+# In[12]:
 
 
 # View the (Rows,Columns) in DataFrame :
@@ -203,7 +205,7 @@ data.shape
 
 # ### Find and Impute Missing Values : 
 
-# In[ ]:
+# In[13]:
 
 
 # Sum of Missing Values in Each Column :
@@ -213,15 +215,15 @@ data.isnull().sum()
 # NOTE : Since there are No Missing Values in any of the Columns, Imputation is not needed.
 
 
-# ### Finding Duplicating using Unique and Value Counts :
+# ### Finding Duplicates using Unique and Value Counts :
 
-# In[ ]:
+# In[14]:
 
 
 data.head(2)
 
 
-# In[ ]:
+# In[15]:
 
 
 # Unique Education Values :
@@ -230,7 +232,7 @@ print(data['education'].unique())
 print(data['education'].nunique())
 
 
-# In[ ]:
+# In[16]:
 
 
 # Cross Tab to display Education stats with respect to y (ie) Target variable :
@@ -238,7 +240,7 @@ print(data['education'].nunique())
 pd.crosstab(index=data["education"], columns=data["y"])
 
 
-# In[ ]:
+# In[17]:
 
 
 # Education Categories and Frequency :
@@ -246,7 +248,7 @@ pd.crosstab(index=data["education"], columns=data["y"])
 data.education.value_counts().plot(kind="barh")
 
 
-# In[ ]:
+# In[18]:
 
 
 # Barplot for the Predictor / Independent Variable - job : 
@@ -255,7 +257,7 @@ sns.countplot(y="job", data=data)
 plt.show()
 
 
-# In[ ]:
+# In[19]:
 
 
 # Barplot for the Predictor / Independent Variable - marital : 
@@ -264,7 +266,7 @@ sns.countplot(x="marital", data=data)
 plt.show()
 
 
-# In[ ]:
+# In[20]:
 
 
 # Barplot for the Predictor / Independent Variable - default : 
@@ -273,7 +275,7 @@ sns.countplot(x="default", data=data)
 plt.show()
 
 
-# In[ ]:
+# In[21]:
 
 
 # Barplot for the Predictor / Independent Variable - housing : 
@@ -282,7 +284,7 @@ sns.countplot(x="housing", data=data)
 plt.show()
 
 
-# In[ ]:
+# In[22]:
 
 
 # Barplot for the Predictor / Independent Variable - loan : 
@@ -291,7 +293,7 @@ sns.countplot(x="loan", data=data)
 plt.show()
 
 
-# In[ ]:
+# In[23]:
 
 
 # Barplot for the Predictor / Independent Variable - poutcome : 
@@ -304,13 +306,13 @@ plt.show()
 # 
 # - Our prediction will be based on the customer’s job, marital status, whether he(she) has credit in default, whether he(she) has a housing loan, whether he(she) has a personal loan, and the outcome of the previous marketing campaigns. So, we will drop the variables that we do not need.
 
-# In[ ]:
+# In[24]:
 
 
 data.head(2)
 
 
-# In[ ]:
+# In[25]:
 
 
 # Removing 
@@ -326,7 +328,7 @@ data.head(2)
 data.drop(data.columns[[0,3,8,9,10,11,12,13]],axis=1,inplace=True)
 
 
-# In[ ]:
+# In[26]:
 
 
 data.head(2)
@@ -336,7 +338,7 @@ data.head(2)
 
 # ### Converting Object Type to Integer using One-Hot Encoding :
 
-# In[ ]:
+# In[27]:
 
 
 # Fetching Data Type of all Columns :
@@ -344,7 +346,7 @@ data.head(2)
 data.dtypes
 
 
-# In[ ]:
+# In[28]:
 
 
 # Creating Dummies for Categorical Variables :
@@ -361,7 +363,7 @@ data_new = pd.get_dummies(data, columns=['job','marital',
 #                                          'poutcome'])
 
 
-# In[ ]:
+# In[29]:
 
 
 # Coverting Target Variable / Column into Binary Format :
@@ -369,7 +371,7 @@ data_new = pd.get_dummies(data, columns=['job','marital',
 data_new.y.replace(('yes', 'no'), (1, 0), inplace=True)
 
 
-# In[ ]:
+# In[30]:
 
 
 # Successfully converted Object data into  Integer data types
@@ -392,7 +394,7 @@ data_new.dtypes
 
 # # Performance Metric using Precision and Recall Calculation along with roc_auc_score & accuracy_score :
 
-# In[ ]:
+# In[31]:
 
 
 # Creating Dictionary with Classifiers :
@@ -410,7 +412,7 @@ classifiers = {
 print(classifiers)
 
 
-# In[ ]:
+# In[32]:
 
 
 # View the (Rows,Columns) in DataFrame :
@@ -419,7 +421,7 @@ print(classifiers)
 data_new.shape
 
 
-# In[ ]:
+# In[33]:
 
 
 # Seperating Predictor and Target Columns into X and y Respectively :
@@ -431,7 +433,7 @@ print(data_X.columns)
 print(data_y.columns)
 
 
-# In[ ]:
+# In[34]:
 
 
 # Log Columns Headings :
@@ -452,8 +454,8 @@ metric = pd.DataFrame(columns=metrics_cols)
 # In[ ]:
 
 
-# import warnings
-# warnings.filterwarnings('ignore')
+import warnings
+warnings.filterwarnings('ignore')
 from sklearn.preprocessing import StandardScaler
 
 
@@ -481,13 +483,77 @@ for Name,classify in classifiers.items():
         metric_entry = pd.DataFrame([[precision,recall,f1_score,roc_auc]], columns=metrics_cols)
         log = log.append(log_entry)
         metric = metric.append(metric_entry)
-        
+
+
+
+#Scroll complete output to view all the accuracy scores and bar graph.
+
+
+# In[ ]:
+
+
 print(log)
+
+
+# In[ ]:
+
+
+print(metric)
+metrics_cols = ["Precision Score","Recall Score","F1-Score","roc-ROC_AUC_Score"]
+
+
+# In[ ]:
+
+
 plt.xlabel('Accuracy')
 plt.title('Classifier Accuracy')
 sns.set_color_codes("muted")
 sns.barplot(x='Accuracy', y='Classifier', data=log, color="g")  
 plt.show()
 
-#Scroll complete output to view all the accuracy scores and bar graph.
+
+# In[ ]:
+
+
+plt.xlabel('Precision Score')
+plt.title('Classifier Accuracy')
+sns.set_color_codes("muted")
+sns.barplot(x='Precision Score', y='Classifier', data=log, color="g")  
+plt.show()
+
+
+# In[ ]:
+
+
+plt.xlabel('Recall Score')
+plt.title('Classifier Accuracy')
+sns.set_color_codes("muted")
+sns.barplot(x='Recall Score', y='Classifier', data=log, color="g")  
+plt.show()
+
+
+# In[ ]:
+
+
+plt.xlabel('F1-Score')
+plt.title('Classifier Accuracy')
+sns.set_color_codes("muted")
+sns.barplot(x='F1-Score', y='Classifier', data=log, color="g")  
+plt.show()
+
+
+# In[ ]:
+
+
+plt.xlabel('roc-ROC_AUC_Score')
+plt.title('Classifier Accuracy')
+sns.set_color_codes("muted")
+sns.barplot(x='roc-ROC_AUC_Score', y='Classifier', data=log, color="g")  
+plt.show()
+
+
+# In[ ]:
+
+
+
 
