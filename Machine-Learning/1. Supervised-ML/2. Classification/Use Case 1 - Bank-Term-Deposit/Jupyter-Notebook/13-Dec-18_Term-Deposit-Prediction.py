@@ -421,7 +421,7 @@ print(classifiers)
 data_new.shape
 
 
-# In[33]:
+# In[ ]:
 
 
 # Seperating Predictor and Target Columns into X and y Respectively :
@@ -442,16 +442,16 @@ log_cols = ["Classifier", "Accuracy","Precision Score","Recall Score","F1-Score"
 log = pd.DataFrame(columns=log_cols)
 
 
-# In[ ]:
+# In[46]:
 
 
 # Metric Columns Headings :
 
-metrics_cols = ["Precision Score","Recall Score","F1-Score","roc-ROC_AUC_Score"]
+metrics_cols = ["Precision Score","Recall Score","F1-Score","ROC_AUC_Score"]
 metric = pd.DataFrame(columns=metrics_cols)
 
 
-# In[ ]:
+# In[48]:
 
 
 import warnings
@@ -489,20 +489,19 @@ for Name,classify in classifiers.items():
 #Scroll complete output to view all the accuracy scores and bar graph.
 
 
-# In[ ]:
+# In[49]:
 
 
 print(log)
 
 
-# In[ ]:
+# In[50]:
 
 
 print(metric)
-metrics_cols = ["Precision Score","Recall Score","F1-Score","roc-ROC_AUC_Score"]
 
 
-# In[ ]:
+# In[51]:
 
 
 plt.xlabel('Accuracy')
@@ -512,7 +511,7 @@ sns.barplot(x='Accuracy', y='Classifier', data=log, color="g")
 plt.show()
 
 
-# In[ ]:
+# In[52]:
 
 
 plt.xlabel('Precision Score')
@@ -522,7 +521,7 @@ sns.barplot(x='Precision Score', y='Classifier', data=log, color="g")
 plt.show()
 
 
-# In[ ]:
+# In[53]:
 
 
 plt.xlabel('Recall Score')
@@ -532,7 +531,7 @@ sns.barplot(x='Recall Score', y='Classifier', data=log, color="g")
 plt.show()
 
 
-# In[ ]:
+# In[54]:
 
 
 plt.xlabel('F1-Score')
@@ -542,18 +541,12 @@ sns.barplot(x='F1-Score', y='Classifier', data=log, color="g")
 plt.show()
 
 
-# In[ ]:
+# In[55]:
 
 
-plt.xlabel('roc-ROC_AUC_Score')
+plt.xlabel('ROC_AUC_Score')
 plt.title('Classifier Accuracy')
 sns.set_color_codes("muted")
-sns.barplot(x='roc-ROC_AUC_Score', y='Classifier', data=log, color="g")  
+sns.barplot(x='ROC_AUC_Score', y='Classifier', data=log, color="g")  
 plt.show()
-
-
-# In[ ]:
-
-
-
 
