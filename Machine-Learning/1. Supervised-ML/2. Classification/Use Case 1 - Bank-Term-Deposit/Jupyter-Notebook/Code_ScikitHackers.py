@@ -99,28 +99,25 @@ import numpy as np
 
 # Classification Algorithms :
 
-from sklearn.svm import SVC
-from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import LogisticRegression
+from sklearn.svm                   import SVC
+from sklearn.naive_bayes           import GaussianNB
+from sklearn.tree                  import DecisionTreeClassifier
+from sklearn.neighbors             import KNeighborsClassifier
+from sklearn.linear_model          import LogisticRegression
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
+from sklearn.ensemble              import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
 
 # Pre-Processing :
 
-from sklearn import preprocessing
-from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing         import LabelEncoder, StandardScaler, MinMaxScaler
 
 # Metrics :
 
-from sklearn import metrics as m
-import statsmodels.formula.api as smf
-from sklearn.metrics import roc_auc_score
-from sklearn.model_selection import ShuffleSplit
-from sklearn.model_selection import StratifiedShuffleSplit
-from sklearn.cross_validation import cross_val_score , train_test_split
+from sklearn                       import metrics as m
+from sklearn.model_selection       import ShuffleSplit, StratifiedShuffleSplit, cross_val_score, train_test_split, GridSearchCV
+
+# import statsmodels.formula.api as smf
+# from sklearn.metrics             import roc_curve , accuracy_score , precision_score , recall_score , roc_auc_score , f1_score
 
 # Visualization :
 
@@ -460,20 +457,27 @@ data_new.dtypes
 # Creating Dictionary with Classifiers :
 
 classifiers = {
-                 
-               '1. Adaptive Boosting Classifier':AdaBoostClassifier(),
-#                '2. Linear Discriminant Analysis':LinearDiscriminantAnalysis(),
-#                '3. Logistic Regression':LogisticRegression(),
-#                '4. Random Forest Classifier': RandomForestClassifier(),
-#                '5. K Nearest Neighbour':KNeighborsClassifier(8),
-                    
-               '6.1 Decision Tree Classifier':DecisionTreeClassifier(random_state=1,max_depth=7),           
+    
+               '5. K Nearest Neighbour':KNeighborsClassifier(n_neighbors=128),
+               '3. Logistic Regression':LogisticRegression(class_weight="balanced",random_state=5),
+               '4. Random Forest Classifier':RandomForestClassifier(bootstrap=False,class_weight="balanced",max_depth=6,max_leaf_nodes=20,n_estimators=100,random_state=10),
+               '6.1 Decision Tree Classifier':DecisionTreeClassifier(class_weight="balanced",max_depth=6,max_leaf_nodes=20,presort =True,random_state=10),
+               '2. Linear Discriminant Analysis':LinearDiscriminantAnalysis(solver='lsqr',shrinkage=0.2),
+               '1. Adaptive Boosting Classifier':AdaBoostClassifier(learning_rate=.9,n_estimators=40),#BEST
+               '7. Gaussian Naive Bayes Classifier':GaussianNB(),# NO CHANGE
+                
+
+#                '3.1 Logistic Regression':LogisticRegression(class_weight"balanced",solver='lbfgs',random_state=5),                
+#                '3.3 Logistic Regression':LogisticRegression(),                 
+#                '5.1 K Nearest Neighbour':KNeighborsClassifier(),    
+#                '5.3 K Nearest Neighbour':KNeighborsClassifier(algorithm='kd_tree'), 
+#                '5.4 K Nearest Neighbour':KNeighborsClassifier(algorithm='brute'),           
 #                '6.2 Decision Tree Classifier 6':DecisionTreeClassifier(random_state=1,max_depth=6),
                            
                
-#                '7. Gaussian Naive Bayes Classifier':GaussianNB(),
-               # '8. Support Vector Classifier':SVC(),
-               '9. Gradient Boosting Classifier':GradientBoostingClassifier()
+                
+#                '8. Support Vector Classifier':SVC(),
+#                '9. Gradient Boosting Classifier':GradientBoostingClassifier()
                }
 print(classifiers)
 
@@ -504,7 +508,8 @@ print(data_y.head())
 
 # Log Columns Headings :
 
-log_cols = ["Classifier", "Accuracy","Precision Score","Recall Score","F1-Score","ROC_AUC_Score","CV_2_Fold","CV_5_Fold","CV_10_Fold","CV_20_Fold"]
+log_cols = ["Classifier", "Accuracy","Precision","Recall","F1","ROC_AUC","CV_2_Fold","CV_5_Fold","CV_10_Fold","CV_20_Fold"]
+# 
 log = pd.DataFrame(columns=log_cols)
 
 # Metric Columns Headings :
@@ -529,73 +534,79 @@ for Name,classify in classifiers.items():
         
         print(Name)
         
-        print("TRAIN:", train_index, "TEST:", test_index)
+        # print("TRAIN:", train_index, "TEST:", test_index)
         
         # Splitting Training and Testing Data :
         
         X_train,X_test = data_X.iloc[train_index], data_X.iloc[test_index]
         y_train,y_test = data_y.iloc[train_index], data_y.iloc[test_index]
                               
-        # Scaling of Features :
+        # Standardizing Features :
         
-        sc_X = StandardScaler()
+        sc_X    = StandardScaler()
         X_train = sc_X.fit_transform(X_train)
-        X_test = sc_X.transform(X_test)
+        X_test  = sc_X.transform(X_test)
+        
+        # Normalizing Features :
+        
+#         Mn_Mx_X = MinMaxScaler()
+#         X_train = Mn_Mx_X.fit_transform(X_train)
+#         X_test =  Mn_Mx_X.transform(X_test)
         
         # Fitting of Train Data and Predicting with Test Data :
         
-        cls = classify
-        cls =cls.fit(X_train,y_train)
+        cls   = classify
+        cls   = cls.fit(X_train,y_train)
         y_out = cls.predict(X_test)
         
         # Calculating Accuracy, Precision, Recall, ROC_AUC and F1 Scores :
         
-        accuracy = m.accuracy_score(y_test,y_out)
+        accuracy  = m.accuracy_score(y_test,y_out)
         precision = m.precision_score(y_test,y_out,average='macro')
-        recall = m.recall_score(y_test,y_out,average='macro')
-        roc_auc = m.roc_auc_score(y_out,y_test)
-        f1_score = m.f1_score(y_test,y_out,average='macro')
+        recall    = m.recall_score(y_test,y_out,average='macro')
+        roc_auc   = m.roc_auc_score(y_out,y_test)
+        f1_score  = m.f1_score(y_test,y_out,average='macro')
         
         # Calculating Cross-Validation AUC Score :
         
-        cross_val_score_2_fold = cross_val_score(classify, X_train, y_train['y'], cv=2, scoring='roc_auc').mean()
-        cross_val_score_5_fold = cross_val_score(classify, X_train, y_train['y'], cv=5, scoring='roc_auc').mean()
+        print(y_train.shape)
+        print(y_train['y'].shape)
+        
+        cross_val_score_2_fold  = cross_val_score(classify, X_train, y_train['y'], cv=2, scoring='roc_auc').mean()
+        cross_val_score_5_fold  = cross_val_score(classify, X_train, y_train['y'], cv=5, scoring='roc_auc').mean()
         cross_val_score_10_fold = cross_val_score(classify, X_train, y_train['y'], cv=10, scoring='roc_auc').mean()
         cross_val_score_20_fold = cross_val_score(classify, X_train, y_train['y'], cv=20, scoring='roc_auc').mean()
                 
         # Classification Report for All Classification Models :
         
-        log_entry = pd.DataFrame([[Name,accuracy,precision,recall,f1_score,roc_auc,cross_val_score_2_fold,cross_val_score_5_fold,cross_val_score_10_fold,cross_val_score_20_fold]], columns=log_cols)
-        log = log.append(log_entry)
+        log_entry = pd.DataFrame([[Name,accuracy,precision,recall,f1_score,roc_auc]], columns=log_cols)
+        # ,cross_val_score_2_fold,cross_val_score_5_fold,cross_val_score_10_fold,cross_val_score_20_fold
+        log       = log.append(log_entry)
         
         # Creating DataFrame with  2 Columns , Replacing Numbers with Category, Saving Target Prediction as CSV File with Index :
-        # 'Index' => Index of Test Data of Predictor 'y_test' 
-        # 'Term_Deposit' => Predicted Output of Target 'X_test' 
-        
+                
         df = pd.DataFrame({'Index': y_test.index.tolist(), 'Term_Deposit': y_out})        
         df['Term_Deposit'].replace((1, 0), ('yes', 'no'), inplace=True)        
         df.to_csv(result_location + "Term_Deposit_"+Name+".csv", header=['Index','Term_Deposit'],index=0)
         
         # Plotting ROC-AUC using True Positive Rate (Sensitivity) vs False Positive Rate (1 - Specificity) :  
         
-        y_pred_proba = classify.predict_proba(X_test)[::,1]
+        y_pred_proba        = classify.predict_proba(X_test)[::,1]
         fpr, tpr, threshold = m.roc_curve(y_test,  y_pred_proba)
-        #    auc = metrics.auc(fpr,tpr)
-        #    IMPORTANT: first argument is true values, second argument is predicted probabilities
+        
+        # First argument is True values, second argument is Predicted Probabilities :
+        
         auc = m.roc_auc_score(y_test, y_pred_proba)
      
         plt.plot(fpr,tpr,label="data 1, AUC="+str(auc))
         plt.legend(loc=4)
         plt.xlabel('False Positive Rate (1 - Specificity)')
         plt.ylabel('True Positive Rate (Sensitivity)')
-        plt.rcParams['font.size'] = 12
-        
-        plt.plot([0, 1], [0, 1], color='blue', linestyle='--')
-        
-        plt.show()
-        
+        plt.rcParams['font.size'] = 12        
+        plt.plot([0, 1], [0, 1], color='blue', linestyle='--')        
+        plt.show()          
                 
-#Scroll complete output to view all the accuracy scores and bar graph.
+# Scroll complete output to view all the accuracy scores and bar graph.
 
 
 # In[35]:
@@ -625,10 +636,10 @@ plt.show()
 
 # Precision Score Comparison :
 
-plt.xlabel('Precision Score')
+plt.xlabel('Precision')
 plt.title('Classifier Accuracy')
 sns.set_color_codes("muted")
-sns.barplot(x='Precision Score', y='Classifier', data=log, color="g")  
+sns.barplot(x='Precision', y='Classifier', data=log, color="g")  
 plt.show()
 
 
@@ -639,10 +650,10 @@ plt.show()
 
 # Recall Score Comparison :
 
-plt.xlabel('Recall Score')
+plt.xlabel('Recall')
 plt.title('Classifier Accuracy')
 sns.set_color_codes("muted")
-sns.barplot(x='Recall Score', y='Classifier', data=log, color="b")  
+sns.barplot(x='Recall', y='Classifier', data=log, color="b")  
 plt.show()
 
 
@@ -653,10 +664,10 @@ plt.show()
 
 # ROC_AUC Score Comparison :
 
-plt.xlabel('ROC_AUC_Score')
+plt.xlabel('ROC_AUC')
 plt.title('Classifier Accuracy')
 sns.set_color_codes("muted")
-sns.barplot(x='ROC_AUC_Score', y='Classifier', data=log, color="m")  
+sns.barplot(x='ROC_AUC', y='Classifier', data=log, color="m")  
 plt.show()
 
 
@@ -667,10 +678,10 @@ plt.show()
 
 # F1 Score Comparison :
 
-plt.xlabel('F1-Score')
+plt.xlabel('F1')
 plt.title('Classifier Accuracy')
 sns.set_color_codes("muted")
-sns.barplot(x='F1-Score', y='Classifier', data=log, color="y")  
+sns.barplot(x='F1', y='Classifier', data=log, color="y")  
 plt.show()
 
 
@@ -690,7 +701,7 @@ plt.show()
 
 # ### 7. CV_5_Fold Comparison for All Classification Models :
 
-# In[42]:
+# In[ ]:
 
 
 # CV_5_Fold Comparison :
@@ -704,7 +715,7 @@ plt.show()
 
 # ### 8. CV_10_Fold Comparison for All Classification Models :
 
-# In[43]:
+# In[ ]:
 
 
 # CV_10_Fold Comparison :
@@ -718,7 +729,7 @@ plt.show()
 
 # ### 9. CV_20_Fold Comparison for All Classification Models :
 
-# In[44]:
+# In[ ]:
 
 
 # CV_20_Fold Comparison :
