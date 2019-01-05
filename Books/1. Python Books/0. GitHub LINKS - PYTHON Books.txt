@@ -1,0 +1,60 @@
+1. Basics-Linear-Algebra-Machine-Learning-JASON-BROWNLEE.pdf
+
+https://github.com/dvrg/educate-resource-for-machine-learning , 
+
+https://github.com/rupskygill/ML-mastery
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Think-Stats-2nd-Edition-EDA-ALLEN B. DOWNEY.pdf
+
+https://github.com/AllenDowney/ThinkStats2 , https://github.com/zurda/thinkStats2 , https://github.com/boboppie/downey-think_stats 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3. Hands-On-Machine-Learning-with-Scikit-Learn-and-TensorFlow-AURELIEN-GERON.pdf
+
+https://github.com/ageron/handson-ml
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. Python-for-Data-Analysis-WES MCKINNEY.pdf
+
+https://github.com/wesm/pydata-book , https://github.com/cuttlefishh/python-for-data-analysis , https://github.com/wangruinju/python-for-data-analysis 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5. Python-Data-Science-Handbook-JAKE-VANDERPLAS.pdf
+
+https://github.com/jakevdp/PythonDataScienceHandbook
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+6. Deep-Learning-IAN-GOOD-FELLOW.pdf
+
+https://github.com/hadrienj/deepLearningBook-Notes , https://github.com/ninkle/deep-learning-book , https://github.com/goodfeli/dlbook_exercises , 
+https://github.com/zsdonghao/deep-learning-book/ , https://github.com/janishar/mit-deep-learning-book-pdf , https://github.com/Himujjal/deep-learning-book , 
+https://github.com/dalmia/Deep-Learning-Book-Chapter-Summaries
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+7. Deep-Learning-with-Python-FRANCOIS-CHOLLET.pdf
+
+https://github.com/fchollet/deep-learning-with-python-notebooks , https://github.com/xoelop/BOOK-Deep-Learning-with-Python-Keras-Francois-Chollet ,
+https://github.com/whyboris/ml-with-python-and-keras , https://github.com/sunjiaxin111/Francois-Chollet-Deep-Learning-with-Python-python-
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+8. Feature_Engg_for_Machine_Learning-ALICE ZHENG.pdf
+
+https://github.com/alicezheng/feature-engineering-book
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+************************************************************************************************************************************************************************
+
+Miscellenous :
+--------------
+
+https://github.com/keras-team/keras , https://github.com/rhiever/Data-Analysis-and-Machine-Learning-Projects
+
