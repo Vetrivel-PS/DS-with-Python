@@ -1,4 +1,4 @@
-# DS-with-Python
+# DS with Python
 
 This repository is a collection of Books that I found essential during my earliest journey in Data Science.
 
